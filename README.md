@@ -17,10 +17,10 @@ It was tested several models with different loss functions. The names are repres
 |                         |        |     | tversky_loss_alpha_0.40 | 8   |
  | | |     | tversky_loss_alpha_0.50 | 9      |
  | | |                                | tversky_loss_alpha_0.60 | 10     |
-       | | |                          | tversky_loss_alpha_0.70 | 11     |
-             | | |                    | tversky_loss_alpha_0.80 | 12     |
-                   | | |              | tversky_loss_alpha_0.90 | 13     |
-                         | | |        | tversky_loss_alpha_1.00 | 14     |
+| | |                          | tversky_loss_alpha_0.70 | 11     |
+| | |                    | tversky_loss_alpha_0.80 | 12     |
+| | |              | tversky_loss_alpha_0.90 | 13     |
+| | |        | tversky_loss_alpha_1.00 | 14     |
 
 ## Models
 
@@ -85,7 +85,7 @@ $$\mathcal L_D(X,Y) = 1-\frac{1}{256 \times 256} \times \sum_i\frac{2X_iY_i}{X_i
 
 Another function that could be used for image segmentation is focal loss
 
-[**paper:**](https://arxiv.org/pdf/1708.02002.pdf)
+[**Original paper about focal loss:**](https://arxiv.org/pdf/1708.02002.pdf)
 
 $$\mathcal L_{focal}(y, \hat y) = -\sum_i \left[\left(1-\sigma(\hat y_i)\right)^\gamma y_i\log\sigma(\hat y_i) + (1-y_i)\log(1-\sigma(\hat y_i))\right].$$
 
@@ -95,7 +95,7 @@ Another option is to use tversky loss function:
 
 $$\mathcal T(\alpha, \beta) = \frac{\sum_{i=1}^{N} p_{0i}g_{0i}}{\sum_{i=1}^{N} p_{0i}g_{0i} + \alpha \sum_{i=1}^{N} p_{0i}g_{1i} + \beta \sum_{i=1}^{N} p_{1i}g_{0i}}.$$
 
-[**paper:**](https://arxiv.org/pdf/1706.05721.pdf)
+[**Original paper about Tversky loss:**](https://arxiv.org/pdf/1706.05721.pdf)
 
 The Tversky loss is a generalization of the Dice loss and F1-score, specifically designed for the task of image segmentation
 
@@ -128,12 +128,19 @@ The assembling.py script is used for training the SegNet or UNet segmentation ne
 python assembling.py --model MODEL --loss LOSS --batch_size BATCH_SIZE --epochs EPOCHS --new_dataframe NEW_DATAFRAME --save_model SAVE_MODEL --evaluate EVALUATE
 ```
 Options
+
 --model MODEL: The model number from the table (SegNet or UNet).
+
 --loss LOSS: The loss function from the table (e.g., Tversky loss).
+
 --batch_size BATCH_SIZE: The size of the batch during training.
+
 --epochs EPOCHS: The number of epochs to train the model.
+
 --new_dataframe NEW_DATAFRAME: If set to a non-zero value, a new dataframe with the training results will be created.
+
 --save_model SAVE_MODEL: If set to a non-zero value, the best model during training will be saved.
+
 --evaluate EVALUATE: If set to a non-zero value, the model will be evaluated on the test dataset at the end of training. This option requires save_model to be set to 1.
 
 ### Automated Training and Reporting
@@ -179,7 +186,7 @@ As previously noted, when the alpha value is close to zero, the Tversky loss pen
 
 From our dataset analysis, it is evident that there is a significant number of false negatives in the training data.
 
-<img src="pics/dataset.png" width="50%">
+<img src="pics/dataset.png">
 
 
 As observed, the model attempts to refine the boundaries, whereas the ground truth is relatively rough. This may explain why the Tversky loss with a small alpha parameter yields the highest metrics.
