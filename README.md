@@ -4,23 +4,23 @@ In the current project in was developed segmentation of melanoma
 
 It was tested several models with different loss functions. The names are represented below in the tables
 
-| Models         | Number |    | Losses                         | Number |
-|----------------|--------|----|--------------------------------|--------|
-| SegNet         | 0      |    | BCELoss                        | 0      |
-| UNet           | 1      |    | bce_loss                       | 1      |
-| UNet_stride    | 2      |    | dice_loss                      | 2      |
-| UNet_dilate    | 3      |    | focal_loss                     | 3      |
-                                | tversky_loss_alpha_0.00        | 4      |
-                                | tversky_loss_alpha_0.10        | 5      |
-                                | tversky_loss_alpha_0.20        | 6      |
-                                | tversky_loss_alpha_0.30        | 7      |
-                                | tversky_loss_alpha_0.40        | 8      |
-                                | tversky_loss_alpha_0.50        | 9      |
-                                | tversky_loss_alpha_0.60        | 10     |
-                                | tversky_loss_alpha_0.70        | 11     |
-                                | tversky_loss_alpha_0.80        | 12     |
-                                | tversky_loss_alpha_0.90        | 13     |
-                                | tversky_loss_alpha_1.00        | 14     |
+| Models                  | Number |     | Losses                         | Number |
+|-------------------------|--------|-----|--------------------------------|--------|
+| SegNet                  | 0      |     | BCELoss                        | 0      |
+| UNet                    | 1      |     | bce_loss                       | 1      |
+| UNet_stride             | 2      |     | dice_loss                      | 2      |
+| UNet_dilate             | 3      |     | focal_loss                     | 3      |
+ |                         |        |     | tversky_loss_alpha_0.00        | 4      |
+ |                         |        |     | tversky_loss_alpha_0.10 | 5   |
+ |                         |        |     | tversky_loss_alpha_0.20 | 6   |
+ |                         |        |     | tversky_loss_alpha_0.30 | 7   |
+|                         |        |     | tversky_loss_alpha_0.40 | 8   |
+ | | |     | tversky_loss_alpha_0.50 | 9      |
+ | | |                                | tversky_loss_alpha_0.60 | 10     |
+       | | |                          | tversky_loss_alpha_0.70 | 11     |
+             | | |                    | tversky_loss_alpha_0.80 | 12     |
+                   | | |              | tversky_loss_alpha_0.90 | 13     |
+                         | | |        | tversky_loss_alpha_1.00 | 14     |
 
 ## Models
 
@@ -93,7 +93,7 @@ $$\mathcal L_{focal}(y, \hat y) = -\sum_i \left[\left(1-\sigma(\hat y_i)\right)^
 
 Another option is to use tversky loss function:
 
-T(\alpha, \beta) = \frac{\sum_{i=1}^{N} p_{0i}g_{0i}}{\sum_{i=1}^{N} p_{0i}g_{0i} + \alpha \sum_{i=1}^{N} p_{0i}g_{1i} + \beta \sum_{i=1}^{N} p_{1i}g_{0i}}
+$$\mathcal T(\alpha, \beta) = \frac{\sum_{i=1}^{N} p_{0i}g_{0i}}{\sum_{i=1}^{N} p_{0i}g_{0i} + \alpha \sum_{i=1}^{N} p_{0i}g_{1i} + \beta \sum_{i=1}^{N} p_{1i}g_{0i}}.$$
 
 [**paper:**](https://arxiv.org/pdf/1706.05721.pdf)
 
@@ -163,44 +163,40 @@ This will create performance graphs for combination of models and loss functions
 
 ## Results
 
-The training/validation losses for 20 epochs could be found in [table](pics/results.csv)
-And on the automatically generated [picture](pics/results.png)
-The picture is big, there is the cut version
+The training and validation losses for 20 epochs can be viewed in this [table](pics/results.csv). 
+Additionally, a visual representation is available in the automatically generated [image](pics/results.png). 
+Please note that the image is large; a cropped version is also provided.
 
 <img src="pics/results_cut.png">
 
-The metric (IoU) for every case is shown below:
+The Intersection over Union (IoU) metric for each case is displayed below:
 
 <img src="pics/metrics.png">
 
-As it could be seen, the best performance is for UNet_dilate and tversky loss with alpha 0.00 or 0.10
+As observed, the best performance is achieved using UNet_dilate and Tversky loss with alpha values of 0.00 or 0.10.
 
-As it was mentioned, if alpha is close to zero - Tversky loss will penalize false negatives more than false positives, making it more suitable for cases with higher false negative rates
+As previously noted, when the alpha value is close to zero, the Tversky loss penalizes false negatives more heavily than false positives. This makes it better suited for situations with higher false negative rates.
 
-And as we can see from dataset there is a lot of false negative in the train data
+From our dataset analysis, it is evident that there is a significant number of false negatives in the training data.
 
 <img src="pics/dataset.png" width="50%">
 
-As could be seen the model is trying to make boundaries more accurate, but ground thruth is more rough.
 
-It could explain why Tversky loss with small alpha parameter is showing the highest metrics
+As observed, the model attempts to refine the boundaries, whereas the ground truth is relatively rough. This may explain why the Tversky loss with a small alpha parameter yields the highest metrics.
 
-During the choosing model, every pair model-loss was trained by 20 epoch with batch_size 25. And results for the best two are:
+During the model selection process, each model-loss pair was trained for 20 epochs with a batch size of 25. The results for the top two performers are as follows:
 
-UNet_dilate + tversky_loss_alpha_0.00 - IuO : 0.8249
-UNet_dilate + tversky_loss_alpha_0.10 - IuO : 0.8247
+UNet_dilate + tversky_loss_alpha_0.00 - IoU: 0.8249
+UNet_dilate + tversky_loss_alpha_0.10 - IoU: 0.8247
 
-The performance of the first one is below. The second one - [link](pics/UNet_dilate_tversky_loss_alpha_0.10_0.png)
+The performance of the first model is shown below, while the second one can be found at this [link](pics/UNet_dilate_tversky_loss_alpha_0.10_0.png)
 
 <img src="pics/UNet_dilate_tversky_loss_alpha_0.00_0.png">
 
-After this, the combination of UNet_dilate + tversky_loss_alpha_0.10 was trained 50 epochs with batch_size 50 and 
-it helped to increase the final score a little bit - 0.8329
-The final results are below
+Following this, the combination of UNet_dilate + tversky_loss_alpha_0.10 was trained for 50 epochs with a batch size of 50. This helped to slightly improve the final score, reaching 0.8329. The final results are displayed below:
 
 <img src="pics/UNet_dilate_tversky_loss_alpha_0.10_.png">
-
-The IoU on the test_dataset for this last the best on validation case - is 0.8612
+For this optimal configuration, the IoU on the test dataset, which performed best during validation, is 0.8612.
 
 
 
